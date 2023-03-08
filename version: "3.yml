@@ -1,0 +1,34 @@
+version: "3.3"
+# name: "essentia-writefreely"
+services:
+  writefreely-app:
+    image: writeas/writefreely:latest
+    depends_on:
+      - writefreely-db
+    configs:
+      - writefreely-config
+    ports:
+      - '80:80'
+  
+  writefreely-db:
+    image: mysql:latest
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: sql_password
+      MYSQL_USER: 'user'
+      MYSQL_PASS: 'password'
+    volumes:
+      - /opt/writefreely-db-data:/var/lib/mysql
+    ports:
+      - '3306:3306'
+
+
+
+configs:
+  writefreely-config:
+    file: ''
+    external: true
+
+secrets:
+  server-certificate:
+    external: true
